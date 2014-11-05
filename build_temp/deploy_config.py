@@ -97,6 +97,7 @@ class DefaultConfig(DeployConfig):
     wp81_ext_native_dll = ['c:/marmalade/7.4/extensions/s3efacebook/lib/wp81/s3eFacebookExtension.dll', 'c:/marmalade/7.4/extensions/s3ewebview/lib/wp81/s3eWebViewExtension.dll']
     ws81_ext_capabilities = []
     iphone_link_libs = []
+    android_extra_strings = '(app_id,FACEBOOK_APP_ID)'
     target = {
          'gcc_x86' : {
                    'debug'   : r'c:\marmalade\7.4\quick\target\notavailable\quick_prebuilt_d.so',

@@ -1,27 +1,64 @@
-local gem = director:createSprite({
-    x=director.displayWidth / 2,
-    y=director.displayHeight / 2,
-    source="textures/gem.png",
-})
-
+local grid
+local gem
+local cellsize = 48
+local scale = 2
 local gemTween
-  
-function screenTouched(event)
+local startX
+local startY
+
+function createGrid()
+  grid = {}
+  for px = 1, 11 do
+    grid[px] = {}
+    for py = 0, 18 do
+      grid[px][py] = director:createSprite({
+        source="textures/gridbox.png",
+        x=px*cellsize,
+        y=py*cellsize,
+        xScale=scale,
+        yScale=scale
+      })
+    end
+  end
+end
+
+function initGem() 
+  gem = director:createSprite({
+    source="textures/gem.png",
+    x=cellsize*6,
+    y=cellsize*9,
+    xScale=scale,
+    yScale=scale
+  })
+end
+
+function touch(event)  
+    if (event.phase == "began") then
+      startX = event.x
+      startY = event.y
+    end
     if (event.phase == "moved") then
-        --swipe up to move gem down
-        if (event.y > gem.y) then
-            gemTween = tween:to(gem, { y=0, time=1, easing=ease.powIn, easingValue=3 })
-        --swipe right to move left
-        elseif (event.x < gem.x) then
-            gemTween = tween:to(gem, { x=0, time=1, easing=ease.powIn, easingValue=3 })
-        --swipe down to move gem up
-        elseif (event.y < gem.y) then
-            gemTween = tween:to(gem, { y=director.displayHeight-25, time=1, easing=ease.powIn, easingValue=3 })
-        --swipe left to move gem right
-        elseif (event.x > gem.x) then
-            gemTween = tween:to(gem, { x=director.displayWidth-25, time=1, easing=ease.powIn, easingValue=3 })
+      if (gemTween == nil) then
+        if (event.x > gem.x and event.x < startX) then
+          gemTween = tween:to(gem, { x=gem.x-cellsize, time=0.02 })
         end
+        if (event.y > gem.y and event.y < startY) then
+          gemTween = tween:to(gem, { y=gem.y-cellsize, time=0.02 })
+        end
+        if (event.x < gem.x and event.x > startX) then
+          gemTween = tween:to(gem, { x=gem.x+cellsize, time=0.02 })
+        end
+        if (event.y < gem.y and event.y > startY) then
+          gemTween = tween:to(gem, { y=gem.y+cellsize, time=0.02 })
+        end
+      end
+    end
+    if (event.phase == "ended") then
+      tween:cancel(gemTween)
+      gemTween = nil
     end
 end
-  
-system:addEventListener("touch", screenTouched)
+
+createGrid()
+initGem()
+system:addEventListener("touch", touch)

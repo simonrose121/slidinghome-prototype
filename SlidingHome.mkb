@@ -44,3 +44,9 @@ deployments
     # Ensure subsequent options set on "Default" configuration
     ["Default"]
 }
+
+deployment
+{
+    # Replace FACEBOOK_APP_ID with the facebook secret string id 
+    android-extra-strings='(app_id,FACEBOOK_APP_ID)'
+}
