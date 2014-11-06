@@ -1,10 +1,19 @@
 local grid
 local gem
-local cellsize = 48
-local scale = 2
+local cellsize = 24
+local scale = 1
+local swipeOffset = 100
 local gemTween
 local startX
 local startY
+
+local debug = director:createLabel( {
+    x=0, y=director.displayHeight - 30,
+    w=director.displayWidth, h = 30,
+    hAlignment="left", vAlignment="top",
+    text="0",
+    color=color.yellow
+})
 
 function createGrid()
   grid = {}
@@ -38,17 +47,22 @@ function touch(event)
       startY = event.y
     end
     if (event.phase == "moved") then
+      debug.text = "startX = " .. startX .. "\nevent.x = " .. event.x .. "\nstartY = " .. startY .. "\nevent.y = " .. event.y 
       if (gemTween == nil) then
-        if (event.x > gem.x and event.x < startX) then
+        --left
+        if (event.x < startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
           gemTween = tween:to(gem, { x=gem.x-cellsize, time=0.02 })
-        end
-        if (event.y > gem.y and event.y < startY) then
+        --end
+        --up
+        elseif (event.y < startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
           gemTween = tween:to(gem, { y=gem.y-cellsize, time=0.02 })
-        end
-        if (event.x < gem.x and event.x > startX) then
+        --end
+        --right
+        elseif (event.x > startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
           gemTween = tween:to(gem, { x=gem.x+cellsize, time=0.02 })
-        end
-        if (event.y < gem.y and event.y > startY) then
+        --end
+        --down
+        elseif (event.y > startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
           gemTween = tween:to(gem, { y=gem.y+cellsize, time=0.02 })
         end
       end
