@@ -2,6 +2,9 @@
 MemMgrMaxAllocWarning=0
 
 [GL]
+VirtualWidth=760
+VirtualHeight=1280
+VirtualLetterbox=1
 
 [QUICK]
 mainFilename="main.lua"

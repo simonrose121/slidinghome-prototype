@@ -1,117 +1,130 @@
 -- Create the game scene
 gameScene = director:createScene()
+
 local grid
 local gem
-local cellsize = 24
+local cellsize = 64
 local scale = 1
 local swipeOffset = 100
+local speed = 1
 local gemTween
 local startX
 local startY
+local tmpX
+local tmpY
 
 local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
   }
 
 local debug = director:createLabel( {
     x=0, y=director.displayHeight - 30,
     w=director.displayWidth, h = 30,
     hAlignment="left", vAlignment="top",
+    text="",
     color=color.yellow
 })
 
 function createGrid()
-  for x = 1, #map do
-      for y = 1, #map[x] do
-          if map[x][y] == 1 then
+  for y = 1, #map do
+      for x = 1, #map[y] do
+          if map[y][x] == 1 then
               director:createSprite({
-                  source="textures/gridbox.png",
+                  source="textures/rock.png",
                   x=y*cellsize,
                   y=x*cellsize,
               })
           end
-          if map[x][y] == 2 then
+          if map[y][x] == 2 then
               gem = director:createSprite({
-                  source="textures/gem.png",
+                  source="textures/character.png",
                   x=y*cellsize,
                   y=x*cellsize,
                   xScale=scale,
                   yScale=scale
               })
           end
-          if map[x][y] == 3 then
+          if map[y][x] == 3 then
               igloo = director:createSprite({
                   source="textures/igloo.png",
                   x=y*cellsize,
                   y=x*cellsize,
                   xScale=scale,
-                  yScale=scale 
+                  yScale=scale
               })
           end
       end
   end
 end
 
-function testMap(x ,y)
-    local tempx = gem.y / cellsize + y
-    local tempy = gem.x / cellsize + x
-    debug.text = "x " .. tempx .. " y " .. tempy .. " map " .. map[tempx][tempy]
-    if map[tempx][tempy] == 1 then
-        return false
+function testObstacle(xDir, yDir)
+   -- Contract: 
+   --           either xDir or yDir must be 0
+   --           xDir and yDir can only be -1,0,1
+    local index = 1
+    local playerX = gem.x / cellsize
+    local playerY = gem.y / cellsize
+    --print("Player postion: " .. playerX .. ", " .. playerY)
+    --print("Testing postion: " .. (playerX + (xDir*index)) .. ", " .. (playerY + (yDir*index)))
+    while(map[playerX + (xDir*index)][playerY + (yDir*index)] == 0) do
+      --print("Position is free!")
+      index = (index + 1)
+      --print("Testing postion: " .. (playerX + (xDir*index)) .. ", " .. (playerY + (yDir*index)))
     end
-    if map[tempx][tempy] == 3 then
-        switchToScene("end")
-    end
-    return true
+    tmpX = (playerX + (xDir * (index-1)))
+    tmpY = (playerY + (yDir * (index-1)))
+    --print("Player's potential postion: " .. tmpX .. ", " .. tmpY)
 end
 
-function touch(event)  
+function testMap(xDir, yDir)
+    local playerX = gem.x / cellsize
+    local playerY = gem.y / cellsize
+    if map[playerX + xDir][playerY + yDir] == 3 then
+        switchToScene("end")
+    end
+end
+
+function touch(event)
     if (event.phase == "began") then
       startX = event.x
       startY = event.y
     end
     if (event.phase == "moved") then
-      if (gemTween == nil) then
-        if (event.x < startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
-            if testMap(-1, 0) then
-                gemTween = tween:to(gem, { x=gem.x-cellsize, time=0.02 })
-            end
-        --up
-        elseif (event.y < startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
-            if testMap(0, -1) then
-                gemTween = tween:to(gem, { y=gem.y-cellsize, time=0.02 })
-            end
-        --right
-        elseif (event.x > startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
-            if testMap(1, 0) then
-                gemTween = tween:to(gem, { x=gem.x+cellsize, time=0.02 })
-            end
-        --down
-        elseif (event.y > startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
-            if testMap(0, 1) then
-                gemTween = tween:to(gem, { y=gem.y+cellsize, time=0.02 })
+        if (gemTween == nil) then
+            if (event.x < startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
+                testObstacle(-1, 0)
+                gemTween = tween:to(gem, { x=tmpX*cellsize, time=speed, onComplete=cancelTween })
+            --up
+            elseif (event.y < startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
+                testObstacle(0, -1)
+                gemTween = tween:to(gem, { y=tmpY*cellsize, time=speed, onComplete=cancelTween })
+            --right
+            elseif (event.x > startX and event.y < startY+swipeOffset and event.y > startY-swipeOffset) then
+                testObstacle(1, 0)
+                gemTween = tween:to(gem, { x=tmpX*cellsize, time=speed, onComplete=cancelTween })
+            --down
+            elseif (event.y > startY and event.x < startX+swipeOffset and event.x > startX-swipeOffset) then
+                testObstacle(0, 1)
+                gemTween = tween:to(gem, { y=tmpY*cellsize, time=speed, onComplete=cancelTween })
             end
         end
-      end
-    end
-    if (event.phase == "ended") then
-      tween:cancel(gemTween)
-      gemTween = nil
     end
 end
 
-function cancelGemTween()
+function cancelTween()
+    testMap(-1, 0)
+    testMap(0, -1)
+    testMap(1, 0)
+    testMap(0, 1)
     tween:cancel(gemTween)
     gemTween = nil
 end
