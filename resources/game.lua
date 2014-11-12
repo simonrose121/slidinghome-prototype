@@ -50,6 +50,15 @@ function createGrid()
                   yScale=scale
               })
           end
+          if map[x][y] == 3 then
+              igloo = director:createSprite({
+                  source="textures/igloo.png",
+                  x=y*cellsize,
+                  y=x*cellsize,
+                  xScale=scale,
+                  yScale=scale 
+              })
+          end
       end
   end
 end
@@ -60,6 +69,9 @@ function testMap(x ,y)
     debug.text = "x " .. tempx .. " y " .. tempy .. " map " .. map[tempx][tempy]
     if map[tempx][tempy] == 1 then
         return false
+    end
+    if map[tempx][tempy] == 3 then
+        switchToScene("end")
     end
     return true
 end
@@ -110,7 +122,7 @@ system:addEventListener("touch", touch)
 function pauseGame(event)
 	if (event.phase == "ended") then
     -- Switch to the pause scene
-    switchToScene("pause")
+      switchToScene("pause")
   end
 end
 
