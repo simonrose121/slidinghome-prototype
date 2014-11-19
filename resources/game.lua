@@ -16,6 +16,13 @@ local tmpY
 local direction
 local index = 1
 local animationDelay = 1/8
+local star = 0
+
+function save()
+    local file = io.open("star.txt", "w")
+    file:write(star.."\n")
+    file:close()
+end
 
 local map = {
       { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -97,6 +104,8 @@ function testMap(xDir, yDir)
     local playerX = player.x / cellsize
     local playerY = player.y / cellsize
     if map[playerX + xDir][playerY + yDir] == 3 then
+        star = star+1
+        save()
         switchToScene("end")
     end
 end
@@ -112,22 +121,23 @@ function touch(event)
             if (event.x < startX - minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(-1, 0)
                 direction = "left"
-                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn })
+                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
+                
             --down
             elseif (event.y < startY - minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, -1)
                 direction = "down"
-                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn })
+                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
             --right
             elseif (event.x > startX + minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(1, 0)
                 direction = "right"
-                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn })
+                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
             --up
             elseif (event.y > startY + minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, 1)
                 direction = "up"
-                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn })
+                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animateChap, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
             end
         end
     end
@@ -189,3 +199,4 @@ local pause_sprite = director:createSprite( {
 sprite_w, sprite_h = pause_sprite:getAtlas():getTextureSize()
 pause_sprite.y = director.displayHeight - sprite_h
 pause_sprite:addEventListener("touch", pauseGame)
+audio:playStream("audio/jinglebells.wav", true)
