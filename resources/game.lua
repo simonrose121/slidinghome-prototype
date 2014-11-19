@@ -118,14 +118,6 @@ function touch(event)
     end
 end
 
-function key(event)
-    if(event.phase == "pressed")
-        if(event.key == "up") then
-            print("up")
-        end
-    end
-end
-
 function cancelTween()
     testMap(-1, 0)
     testMap(0, -1)

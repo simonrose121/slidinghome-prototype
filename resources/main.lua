@@ -2,7 +2,11 @@ require("mainMenu")
 require("pauseMenu")
 require("endGame")
 require("game")
- 
+require("help")
+require("settings")
+
+director:moveToScene(menuScene)
+
 -- Switch to specific scene
 function switchToScene(scene_name)
     if (scene_name == "game") then
@@ -13,5 +17,9 @@ function switchToScene(scene_name)
         director:moveToScene(pauseScene, {transitionType="slideInT", transitionTime=0.5})
     elseif (scene_name == "end") then
         director:moveToScene(endScene, {transitionType="fade", transitionTime=0.5})    
+    elseif (scene_name == "help") then
+        director:moveToScene(helpScene, {transitionType="fade", transitionTime=0.5})  
+    elseif (scene_name == "settings") then
+        director:moveToScene(settingsScene, {transitionType="fade", transitionTime=0.5})  
     end
 end

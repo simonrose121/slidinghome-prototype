@@ -1,5 +1,13 @@
 endScene = director:createScene()
 
+-- Background
+local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Menu_Design_Potrait.png")
+background.xAnchor = 0.5
+background.yAnchor = 0.5
+local bg_width, bg_height = background:getAtlas():getTextureSize()
+background.xScale = director.displayWidth / bg_width
+background.yScale = director.displayHeight / bg_height
+
 local playButton
 
 function mainMenu(event)
@@ -9,10 +17,10 @@ end
 
 -- Create Start Game button
 playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/info_panel.png")
-playButton.xAnchor = 0.5
-playButton.yAnchor = 0.5
-playButton.xScale = 0.5
-playButton.yScale = 0.5
+playButton.xAnchor = 1.0
+playButton.yAnchor = -0.2
+playButton.xScale = 1
+playButton.yScale = 1
 playButton:addEventListener("touch", mainMenu)
 local label = director:createLabel( {
 	x = 0, y = 0, 

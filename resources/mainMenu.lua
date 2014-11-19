@@ -4,9 +4,15 @@ Main Menu
 
 -- Create a scene to contain the main menu
 menuScene = director:createScene()
+-- Background
+local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Menu_Design_Potrait.png")
+background.xAnchor = 0.5
+background.yAnchor = 0.5
+local bg_width, bg_height = background:getAtlas():getTextureSize()
+background.xScale = director.displayWidth / bg_width
+background.yScale = director.displayHeight / bg_height
 -- UI
 local playButton
-local playText
 
 -- New game event handler, called when the user taps the New Game button
 function newGame(event)
@@ -14,17 +20,32 @@ function newGame(event)
 	switchToScene("game")
 end
 
+-- New game event handler, called when the user taps the New Game button
+function helpMenu(event)
+	-- Switch to game scene
+	switchToScene("help")
+end
+
+-- New game event handler, called when the user taps the New Game button
+function settingsMenu(event)
+	-- Switch to game scene
+	switchToScene("settings")
+end
+
 -- Create Start Game button
-playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/info_panel.png")
-playButton.xAnchor = 0.5
-playButton.yAnchor = 0.5
-playButton.xScale = 0.5
-playButton.yScale = 0.5
+playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Start_Button.png")
+playButton.xAnchor = 1.3
+playButton.yAnchor = -1.8
 playButton:addEventListener("touch", newGame)
 
--- Create Start Game button text
-playText = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/play.png")
-playText.xAnchor = 0.5
-playText.yAnchor = 0.5
-playText.xScale = 0.5
-playText.yScale = 0.5
+-- Create Help Game button
+playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Help_Button.png")
+playButton.xAnchor = 2.1
+playButton.yAnchor = -0.4
+playButton:addEventListener("touch", helpMenu)
+
+-- Create Settings Game button
+playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Settings_Button.png")
+playButton.xAnchor = 1.6
+playButton.yAnchor = 1.6
+playButton:addEventListener("touch", settingsMenu)

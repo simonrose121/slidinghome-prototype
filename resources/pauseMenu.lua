@@ -4,8 +4,19 @@ Pause Menu
 
 -- Create a scene to contain the main menu
 pauseScene = director:createScene()
+
+-- Background
+local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Pause_Menu.png")
+background.xAnchor = 0.5
+background.yAnchor = 0.5
+local bg_width, bg_height = background:getAtlas():getTextureSize()
+background.xScale = director.displayWidth / bg_width
+background.yScale = director.displayHeight / bg_height
+
 -- UI
 local continueGameButton
+local settingsButton
+local restartButton
 local exitGameButton
 
 -- Continue game event handler, called when the user taps the Continue Game button
@@ -15,43 +26,46 @@ function continueGame(event)
 end
 
 -- Exit game event handler, called when the user taps the Exit Game button
+function settings(event)
+	-- Switch to main men  scene
+	switchToScene("settings")
+end
+
+
+
+-- Exit game event handler, called when the user taps the Exit Game button
 function exitGame(event)
 	-- Switch to main men  scene
 	switchToScene("main")
 end
 
 -- Create Continue Game button
-continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/button_bg.png")
-local atlas = continueGameButton:getAtlas()
-local atlas_w, atlas_h = atlas:getTextureSize()
+continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Continue_Button.png")
 continueGameButton.xAnchor = 0.5
-continueGameButton.yAnchor = 0.5
-continueGameButton.xScale = 0.5
-continueGameButton.yScale = 0.5
+continueGameButton.yAnchor = -0.5
+continueGameButton.xScale = 1
+continueGameButton.yScale = 1
 continueGameButton:addEventListener("touch", continueGame)
--- Create Continue Game button text
-local label = director:createLabel( {
-	x = 0, y = 0, 
-	w = atlas_w, h = atlas_h, 
-	hAlignment="centre", vAlignment="middle", 
-  textXScale = 2, textYScale = 2, 
-	text="Continue"
-})
-continueGameButton:addChild(label)
+
+-- Create settings button
+settingsButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Settings_Button_2.png")
+settingsButton.xAnchor = 0.5
+settingsButton.yAnchor = 1.0
+settingsButton.xScale = 1
+settingsButton.yScale = 1
+settingsButton:addEventListener("touch", settings)
+
+-- Create Restart Game button
+restartButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Restart_Button.png")
+restartButton.xAnchor = 0.5
+restartButton.yAnchor = 2.5
+restartButton.xScale = 1
+restartButton.yScale = 1
 
 -- Create Exit Game button
-exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY - 100, "textures/button_bg.png")
+exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Exit_Button.png")
 exitGameButton.xAnchor = 0.5
-exitGameButton.yAnchor = 0.5
-exitGameButton.xScale = 0.5
-exitGameButton.yScale = 0.5
+exitGameButton.yAnchor = 4.0
+exitGameButton.xScale = 1
+exitGameButton.yScale = 1
 exitGameButton:addEventListener("touch", exitGame)
--- Create Exit Game button text
-local label = director:createLabel( {
-	x = 0, y = 0, 
-	w = atlas_w, h = atlas_h, 
-	hAlignment="centre", vAlignment="middle", 
-	text="Exit Game", 
-	textXScale = 2, textYScale = 2, 
-	})
-exitGameButton:addChild(label)
