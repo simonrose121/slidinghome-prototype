@@ -44,35 +44,38 @@ local downAn = director:createAtlas({ width=64, height=64, numFrames=3, textureN
 local upAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/up.png" })
 
 function createGrid()
-  for y = 1, #map do
-      for x = 1, #map[y] do
-          if map[y][x] == 1 then
-              director:createSprite({
-                  source="textures/rock.png",
-                  x=y*cellsize,
-                  y=x*cellsize,
-              })
-          end
-          if map[y][x] == 2 then
-              player = director:createSprite({
-                  source="textures/character.png",
-                  x=y*cellsize,
-                  y=x*cellsize,
-                  xScale=scale,
-                  yScale=scale,
-              })
-          end
-          if map[y][x] == 3 then
-              igloo = director:createSprite({
-                  source="textures/igloo.png",
-                  x=y*cellsize,
-                  y=x*cellsize,
-                  xScale=scale,
-                  yScale=scale
-              })
-          end
-      end
-  end
+    for y = 1, #map do
+        for x = 1, #map[y] do
+            if map[y][x] == 1 then
+                director:createSprite({
+                    source="textures/rock.png",
+                    x=y*cellsize,
+                    y=x*cellsize,
+                })
+            end
+            if map[y][x] == 2 then
+                player = director:createSprite({
+                    source="textures/character.png",
+                    x=y*cellsize,
+                    y=x*cellsize,
+                })
+            end
+            if map[y][x] == 3 then
+                igloo = director:createSprite({
+                    source="textures/igloo.png",
+                    x=y*cellsize,
+                    y=x*cellsize,
+                })
+            end
+            if map[y][x] == 4 then
+                snowpatch = director:createSprite({
+                    source="textures/snowpatch.png",
+                    x=y*cellsize,
+                    y=x*cellsize,
+                })
+            end
+        end
+    end
 end
 
 function testObstacle(xDir, yDir)
