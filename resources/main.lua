@@ -3,6 +3,9 @@ require("pauseMenu")
 require("endGame")
 require("game")
  
+ --initialise game to menu screen
+director:moveToScene(menuScene)
+
 -- Switch to specific scene
 function switchToScene(scene_name)
     if (scene_name == "game") then
