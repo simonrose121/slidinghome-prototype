@@ -1,6 +1,14 @@
 -- Create the game scene
 gameScene = director:createScene()
 
+-- Background
+local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
+background.xAnchor = 0.5
+background.yAnchor = 0.53
+local bg_width, bg_height = background:getAtlas():getTextureSize()
+background.xScale = director.displayWidth / bg_width
+background.yScale = director.displayHeight / 850
+
 local grid
 local player
 local cellsize = 64

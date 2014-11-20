@@ -17,8 +17,8 @@ function exitGame(event)
 end
 
 -- Create Exit Game button
-exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY - 100, "textures/button_bg.png")
-exitGameButton.xAnchor = 1.0
+exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/info_panel.png")
+exitGameButton.xAnchor = 1
 exitGameButton.yAnchor = -0.2
 exitGameButton.xScale = 1
 exitGameButton.yScale = 1
