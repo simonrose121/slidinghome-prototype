@@ -33,19 +33,27 @@ function settingsMenu(event)
 end
 
 -- Create Start Game button
-playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Start_Button.png")
-playButton.xAnchor = 1.3
-playButton.yAnchor = -1.8
+playButton = director:createSprite(director.displayCenterX, (director.displayHeight/3), "textures/Start_Button.png")
+playButton.xAnchor = 1
+playButton.yAnchor = -4
+playButton.xScale = (director.displayWidth / 768) 
+playButton.yScale = (director.displayWidth / 768)
 playButton:addEventListener("touch", newGame)
 
 -- Create Help Game button
 playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Help_Button.png")
 playButton.xAnchor = 2.1
 playButton.yAnchor = -0.4
+playButton.xScale = (director.displayWidth / 768) 
+playButton.yScale = (director.displayWidth / 768)
 playButton:addEventListener("touch", helpMenu)
 
 -- Create Settings Game button
 playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Settings_Button.png")
 playButton.xAnchor = 1.6
 playButton.yAnchor = 1.6
+playButton.xScale = (director.displayWidth / 768) 
+playButton.yScale = (director.displayWidth / 768)
 playButton:addEventListener("touch", settingsMenu)
+
+audio:playStream("audio/jinglebells.wav", true)

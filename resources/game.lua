@@ -1,17 +1,20 @@
 -- Create the game scene
 gameScene = director:createScene()
 
+local graphicDesignWidth = 768    
+local graphicsScale = director.displayWidth / graphicDesignWidth
+
 -- Background
 local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
 background.xAnchor = 0.5
-background.yAnchor = 0.53
+background.yAnchor = 0.5
 local bg_width, bg_height = background:getAtlas():getTextureSize()
 background.xScale = director.displayWidth / bg_width
 background.yScale = director.displayHeight / 850
 
 local grid
 local player
-local cellsize = 64
+local cellsize = 64 * graphicsScale
 local scale = 1
 local swipeOffset = 200
 local minimumSwipe = 100
@@ -33,23 +36,17 @@ function save()
     file:close()
 end
 
-function load()
-    local file = io.open("map1.txt", "r")
-    map = tostring(file:read())
-    file:close()
-end
-
 local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 1 },
+      { 1, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
   }
 
 local debug = director:createLabel( {
@@ -73,6 +70,8 @@ function createGrid()
                     source="textures/rock.png",
                     x=y*cellsize,
                     y=x*cellsize,
+                    xScale = graphicsScale, 
+                    yScale = graphicsScale, 
                 })
             end
             if map[y][x] == 2 then
@@ -80,6 +79,8 @@ function createGrid()
                     source="textures/character.png",
                     x=y*cellsize,
                     y=x*cellsize,
+                    xScale = graphicsScale, 
+                    yScale = graphicsScale, 
                 })
             end
             if map[y][x] == 3 then
@@ -87,6 +88,8 @@ function createGrid()
                     source="textures/igloo.png",
                     x=y*cellsize,
                     y=x*cellsize,
+                    xScale = graphicsScale, 
+                    yScale = graphicsScale, 
                 })
             end
             if map[y][x] == 4 then
@@ -94,10 +97,18 @@ function createGrid()
                     source="textures/snowpatch.png",
                     x=y*cellsize,
                     y=x*cellsize,
+                    xScale = graphicsScale, 
+                    yScale = graphicsScale, 
                 })
             end
         end
     end
+end
+
+function initAudio()
+    -- Preload sound effects
+    --audio:stopStream("audio/jinglebells.wav")
+    audio:loadSound("audio/slide.wav")
 end
 
 function testObstacle(xDir, yDir)
@@ -105,8 +116,8 @@ function testObstacle(xDir, yDir)
    --           either xDir or yDir must be 0
    --           xDir and yDir can only be -1,0,1
     index = 1
-    local playerX = player.x / cellsize
-    local playerY = player.y / cellsize
+    local playerX = math.floor(player.x / cellsize)
+    local playerY = math.floor(player.y / cellsize)
     while (map[playerX + (xDir*index)][playerY + (yDir*index)] == 0) do
         index = (index + 1)
         map[playerX][playerY] = 0
@@ -116,8 +127,8 @@ function testObstacle(xDir, yDir)
 end
 
 function testMap(xDir, yDir)
-    local playerX = player.x / cellsize
-    local playerY = player.y / cellsize
+    local playerX = math.floor(player.x / cellsize)
+    local playerY = math.floor(player.y / cellsize)
     if map[playerX + xDir][playerY + yDir] == 3 then
         star = star+1
         save()
@@ -137,23 +148,23 @@ function touch(event)
             if (event.x < startX - minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(-1, 0)
                 direction = "left"
-                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
-                
+                audio:playSound("audio/slide.wav") 
+                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn})
             --down
             elseif (event.y < startY - minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, -1)
                 direction = "down"
-                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
+                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             --right
             elseif (event.x > startX + minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(1, 0)
                 direction = "right"
-                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
+                playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             --up
             elseif (event.y > startY + minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, 1)
                 direction = "up"
-                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn, audio:playStream("audio/slide.wav", false) })
+                playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             end
         end
     end
@@ -195,7 +206,7 @@ function cancelTween()
     playerTween = nil
 end
 
-load()
+initAudio()
 createGrid()
 system:addEventListener("touch", touch)
 
@@ -209,10 +220,12 @@ end
 -- Create pause menu sprite (docked to top of screen)
 local pause_sprite = director:createSprite( {
   	x = director.displayCenterX, y = 0, 
-  	xAnchor = 0.5, 
+  	xAnchor = 0.5,
+    yAchor = 0.5, 
+    xScale = graphicsScale,
+    yScale = graphicsScale,
   	source = "textures/pause_icon.png"
 } )
 sprite_w, sprite_h = pause_sprite:getAtlas():getTextureSize()
 pause_sprite.y = director.displayHeight - sprite_h
 pause_sprite:addEventListener("touch", pauseGame)
-audio:playStream("audio/jinglebells.wav", true)

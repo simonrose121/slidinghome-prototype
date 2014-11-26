@@ -3,8 +3,8 @@ MemMgrMaxAllocWarning=0
 DispFixRot=FixedPortrait
 
 [GL]
-VirtualWidth=760
-VirtualHeight=1280
+#VirtualWidth=320
+#VirtualHeight=480
 VirtualLetterbox=1
 
 [QUICK]

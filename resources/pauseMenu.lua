@@ -19,6 +19,7 @@ local settingsButton
 local restartButton
 local exitGameButton
 
+local playButton
 -- Continue game event handler, called when the user taps the Continue Game button
 function continueGame(event)
 	-- Switch to game scene
@@ -31,8 +32,6 @@ function settings(event)
 	switchToScene("settings")
 end
 
-
-
 -- Exit game event handler, called when the user taps the Exit Game button
 function exitGame(event)
 	-- Switch to main men  scene
@@ -40,32 +39,33 @@ function exitGame(event)
 end
 
 -- Create Continue Game button
-continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Continue_Button.png")
+continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Continue_Button.png")
 continueGameButton.xAnchor = 0.5
-continueGameButton.yAnchor = -0.5
-continueGameButton.xScale = 1
-continueGameButton.yScale = 1
+continueGameButton.yAnchor = -2
+continueGameButton.xScale = (director.displayWidth / 768) 
+continueGameButton.yScale = (director.displayWidth / 768) 
 continueGameButton:addEventListener("touch", continueGame)
 
+
 -- Create settings button
-settingsButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Settings_Button_2.png")
+settingsButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Settings_Button_2.png")
 settingsButton.xAnchor = 0.5
-settingsButton.yAnchor = 1.0
-settingsButton.xScale = 1
-settingsButton.yScale = 1
+settingsButton.yAnchor = -0.5
+settingsButton.xScale = (director.displayWidth / 768) 
+settingsButton.yScale = (director.displayWidth / 768) 
 settingsButton:addEventListener("touch", settings)
 
 -- Create Restart Game button
-restartButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Restart_Button.png")
+restartButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Restart_Button.png")
 restartButton.xAnchor = 0.5
-restartButton.yAnchor = 2.5
-restartButton.xScale = 1
-restartButton.yScale = 1
+restartButton.yAnchor = 1
+restartButton.xScale = (director.displayWidth / 768) 
+restartButton.yScale = (director.displayWidth / 768) 
 
 -- Create Exit Game button
-exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY + 100, "textures/Exit_Button.png")
+exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Exit_Button.png")
 exitGameButton.xAnchor = 0.5
-exitGameButton.yAnchor = 4.0
-exitGameButton.xScale = 1
-exitGameButton.yScale = 1
+exitGameButton.yAnchor = 2.5
+exitGameButton.xScale = (director.displayWidth / 768) 
+exitGameButton.yScale = (director.displayWidth / 768) 
 exitGameButton:addEventListener("touch", exitGame)

@@ -19,8 +19,8 @@ end
 playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/info_panel.png")
 playButton.xAnchor = 1.0
 playButton.yAnchor = -0.2
-playButton.xScale = 1
-playButton.yScale = 1
+playButton.xScale = (director.displayWidth / 768) 
+playButton.yScale = (director.displayWidth / 768) 
 playButton:addEventListener("touch", mainMenu)
 local label = director:createLabel( {
 	x = 0, y = 0, 
