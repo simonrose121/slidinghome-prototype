@@ -4,6 +4,7 @@ require("endGame")
 require("game")
 require("help")
 require("settings")
+require("levelSelect")
 
 director:moveToScene(menuScene)
 
@@ -21,5 +22,7 @@ function switchToScene(scene_name)
         director:moveToScene(helpScene, {transitionType="fade", transitionTime=0.5})  
     elseif (scene_name == "settings") then
         director:moveToScene(settingsScene, {transitionType="fade", transitionTime=0.5})  
+    elseif (scene_name == "levelSelect") then
+        director:moveToScene(levelScene, {transitionType="fade", transitionTime=0.5})  
     end
 end

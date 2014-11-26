@@ -15,9 +15,9 @@ background.yScale = director.displayHeight / bg_height
 local playButton
 
 -- New game event handler, called when the user taps the New Game button
-function newGame(event)
+function levelSelect(event)
 	-- Switch to game scene
-	switchToScene("game")
+	switchToScene("levelSelect")
 end
 
 -- New game event handler, called when the user taps the New Game button
@@ -38,7 +38,7 @@ playButton.xAnchor = 1
 playButton.yAnchor = -4
 playButton.xScale = (director.displayWidth / 768) 
 playButton.yScale = (director.displayWidth / 768)
-playButton:addEventListener("touch", newGame)
+playButton:addEventListener("touch", levelSelect)
 
 -- Create Help Game button
 playButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Help_Button.png")
