@@ -8,6 +8,8 @@ require("levelSelect")
 
 director:moveToScene(menuScene)
 
+system:setFrameRateLimit(30)
+
 -- Switch to specific scene
 function switchToScene(scene_name)
     if (scene_name == "game") then

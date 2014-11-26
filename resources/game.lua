@@ -36,26 +36,77 @@ function save()
     file:close()
 end
 
+
+--level 1
 local map = {
       { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
       { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 1 },
-      { 1, 0, 2, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-  }
+}
+--[[
+--level 2
+local map = {
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
+      { 1, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+}
 
-local debug = director:createLabel( {
-    x=0, y=director.displayHeight - 30,
-    w=director.displayWidth, h = 30,
-    hAlignment="left", vAlignment="top",
-    text="",
-    color=color.yellow
-})
+--level 3
+local map = {
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1 },
+      { 1, 2, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+}
+
+--level 4
+local map = {
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+      { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+      { 1, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+}
+
+--level 5
+local map = {
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 1 },
+      { 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1 },
+      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+}
+]]--
 
 local rightAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/right.png" })
 local leftAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/left.png" })
@@ -105,6 +156,10 @@ function createGrid()
     end
 end
 
+function clean()
+    
+end
+
 function initAudio()
     -- Preload sound effects
     --audio:stopStream("audio/jinglebells.wav")
@@ -116,8 +171,8 @@ function testObstacle(xDir, yDir)
    --           either xDir or yDir must be 0
    --           xDir and yDir can only be -1,0,1
     index = 1
-    local playerX = math.floor(player.x / cellsize)
-    local playerY = math.floor(player.y / cellsize)
+    local playerX = math.floor((player.x / cellsize) + 0.5) --to round up if over .5
+    local playerY = math.floor((player.y / cellsize) + 0.5)
     while (map[playerX + (xDir*index)][playerY + (yDir*index)] == 0) do
         index = (index + 1)
         map[playerX][playerY] = 0
@@ -127,12 +182,12 @@ function testObstacle(xDir, yDir)
 end
 
 function testMap(xDir, yDir)
-    local playerX = math.floor(player.x / cellsize)
-    local playerY = math.floor(player.y / cellsize)
+    local playerX = math.floor((player.x / cellsize) + 0.5)
+    local playerY = math.floor((player.y / cellsize) + 0.5)
     if map[playerX + xDir][playerY + yDir] == 3 then
-        star = star+1
+        clean()
+        star = star + 1 
         save()
-        --reset()
         switchToScene("end")
     end
 end
@@ -148,7 +203,6 @@ function touch(event)
             if (event.x < startX - minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(-1, 0)
                 direction = "left"
-                audio:playSound("audio/slide.wav") 
                 playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn})
             --down
             elseif (event.y < startY - minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
@@ -171,36 +225,36 @@ function touch(event)
 end
 
 function animatePlayer()
-    if(direction == "right") then
-        player:setAnimation(director:createAnimation( { start=1, count=3, atlas=rightAn, delay=animationDelay} ))
-    end
     if(direction == "left") then
         player:setAnimation(director:createAnimation( { start=1, count=3, atlas=leftAn, delay=animationDelay} ))
-    end
-    if(direction == "up") then
-        player:setAnimation(director:createAnimation( { start=1, count=3, atlas=upAn, delay=animationDelay} ))
     end
     if(direction == "down") then
         player:setAnimation(director:createAnimation( { start=1, count=3, atlas=downAn, delay=animationDelay} ))
     end
+    if(direction == "right") then
+        player:setAnimation(director:createAnimation( { start=1, count=3, atlas=rightAn, delay=animationDelay} ))
+    end
+    if(direction == "up") then
+        player:setAnimation(director:createAnimation( { start=1, count=3, atlas=upAn, delay=animationDelay} ))
+    end
 end
 
 function cancelTween()
-    if(direction == "up") then
+    if(direction == "left") then
         player:pause()
-        testMap(0, 1)
+        testMap(-1, 0)
     end
     if(direction == "down") then
         player:pause()
         testMap(0, -1)
     end
-    if(direction == "left") then
+    if(direction == "right") then
         player:pause()
         testMap(1, 0)
     end
-    if(direction == "right") then
+    if(direction == "up") then
         player:pause()
-        testMap(-1, 0)
+        testMap(0, 1)
     end
     tween:cancel(playerTween)
     playerTween = nil
@@ -213,7 +267,8 @@ system:addEventListener("touch", touch)
 function pauseGame(event)
 	if (event.phase == "ended") then
     -- Switch to the pause scene
-      switchToScene("pause")
+        gameScene:pauseTweens()
+        switchToScene("pause")
   end
 end
 
@@ -221,11 +276,9 @@ end
 local pause_sprite = director:createSprite( {
   	x = director.displayCenterX, y = 0, 
   	xAnchor = 0.5,
-    yAchor = 0.5, 
+    yAnchor = 0, 
     xScale = graphicsScale,
     yScale = graphicsScale,
   	source = "textures/pause_icon.png"
 } )
-sprite_w, sprite_h = pause_sprite:getAtlas():getTextureSize()
-pause_sprite.y = director.displayHeight - sprite_h
 pause_sprite:addEventListener("touch", pauseGame)

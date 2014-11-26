@@ -56,4 +56,4 @@ playButton.xScale = (director.displayWidth / 768)
 playButton.yScale = (director.displayWidth / 768)
 playButton:addEventListener("touch", settingsMenu)
 
-audio:playStream("audio/jinglebells.wav", true)
+--audio:playStream("audio/jinglebells.wav", true)
