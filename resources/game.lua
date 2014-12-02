@@ -1,16 +1,18 @@
 -- Create the game scene
-gameScene = director:createScene()
+
+module(..., package.seeall)
+
+gameScene = nil
+
+local class = require("class")
+require("mainMenu")
+require("pauseMenu")
+require("levelSelect")
 
 local graphicDesignWidth = 768    
 local graphicsScale = director.displayWidth / graphicDesignWidth
-
--- Background
-local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
-background.xAnchor = 0.5
-background.yAnchor = 0.5
-local bg_width, bg_height = background:getAtlas():getTextureSize()
-background.xScale = director.displayWidth / bg_width
-background.yScale = director.displayHeight / 850
+local bg_width
+local bg_height 
 
 local grid
 local player
@@ -46,21 +48,21 @@ function save()
     file:close()
 end
 
-function levelComplete()
-  if star == 0 then
-    staruncomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_uncomplete.png")
-    staruncomplete.xAnchor = -4.5
-    staruncomplete.yAnchor = -8
-    staruncomplete.xScale = (director.displayWidth / bg_width) 
-    staruncomplete.yScale = (director.displayHeight / bg_height) 
-  elseif star > 0 then
-    starcomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_complete.png")
-    starcomplete.xAnchor = -4.5
-    starcomplete.yAnchor = -8
-    starcomplete.xScale = (director.displayWidth / bg_width) 
-    starcomplete.yScale = (director.displayHeight / bg_height) 
-    levelcomplete = true
-  end
+function isLevelComplete()
+    if star == 0 then
+        staruncomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_uncomplete.png")
+        staruncomplete.xAnchor = -4.5
+        staruncomplete.yAnchor = -8
+        staruncomplete.xScale = (director.displayWidth / bg_width) 
+        staruncomplete.yScale = (director.displayHeight / bg_height) 
+    elseif star > 0 then
+        starcomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_complete.png")
+        starcomplete.xAnchor = -4.5
+        starcomplete.yAnchor = -8
+        starcomplete.xScale = (director.displayWidth / bg_width) 
+        starcomplete.yScale = (director.displayHeight / bg_height) 
+        levelcomplete = true
+    end
 end
 
 --level 1
@@ -69,8 +71,8 @@ local map = {
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 3, 1 },
-      { 1, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+      { 1, 2, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
       { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -143,7 +145,7 @@ function createGrid()
     for y = 1, #map do
         for x = 1, #map[y] do
             if map[y][x] == 1 then
-                director:createSprite({
+                rock = director:createSprite({
                     source="textures/rock.png",
                     x=y*cellsize,
                     y=x*cellsize,
@@ -180,10 +182,6 @@ function createGrid()
             end
         end
     end
-end
-
-function clean()
-    
 end
 
 function initAudio()
@@ -292,27 +290,68 @@ function cancelTween()
     playerTween = nil
 end
 
-initAudio()
-createGrid()
-load()
-levelComplete()
-system:addEventListener("touch", touch)
+function clean(event) 
+    --reset map array
+    map = {}
+    --remove objects
+    rock:removeFromParent()
+    player:removeFromParent()
+    igloo:removeFromParent()
+    --snowpatch:removeFromParent()
+    rock = nil
+    player = nil
+    igloo = nil
+    snowpatch = nil
+
+    collectgarbage("collect")
+    director:cleanupTextures()
+end
 
 function pauseGame(event)
-	if (event.phase == "ended") then
+  if (event.phase == "ended") then
     -- Switch to the pause scene
         gameScene:pauseTweens()
         switchToScene("pause")
   end
 end
 
--- Create pause menu sprite (docked to top of screen)
-local pause_sprite = director:createSprite( {
-  	x = director.displayCenterX, y = 0, 
-  	xAnchor = 0.5,
-    yAnchor = 0, 
-    xScale = graphicsScale,
-    yScale = graphicsScale,
-  	source = "textures/pause_icon.png"
-} )
-pause_sprite:addEventListener("touch", pauseGame)
+function initUI()
+  -- Create pause menu sprite (docked to top of screen)
+  -- Background
+  local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
+  background.xAnchor = 0.5
+  background.yAnchor = 0.5
+  bg_width, bg_height = background:getAtlas():getTextureSize()
+  background.xScale = director.displayWidth / bg_width
+  background.yScale = director.displayHeight / 850
+
+
+  local pause_sprite = director:createSprite( {
+      x = director.displayCenterX, y = 0, 
+      xAnchor = 0.5,
+      yAnchor = 0, 
+      xScale = graphicsScale,
+      yScale = graphicsScale,
+      source = "textures/pause_icon.png"
+  } )
+  pause_sprite:addEventListener("touch", pauseGame)
+end
+
+
+function init()
+    gameScene = director:createScene()
+    
+    initAudio()
+    initUI()
+    load()
+    isLevelComplete()
+    createGrid()
+
+    levelSelect.init()
+    pauseMenu.init()
+    mainMenu.init()
+
+    system:addEventListener("touch", touch)
+end
+
+

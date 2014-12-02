@@ -1,14 +1,7 @@
-require("mainMenu")
-require("pauseMenu")
-require("endGame")
-require("game")
-require("help")
-require("settings")
-require("levelSelect")
-
-director:moveToScene(menuScene)
-
 system:setFrameRateLimit(30)
+
+require("game")
+game.init()
 
 -- Switch to specific scene
 function switchToScene(scene_name)
