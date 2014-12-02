@@ -8,6 +8,7 @@ local class = require("class")
 require("mainMenu")
 require("pauseMenu")
 require("levelSelect")
+require("endGame")
 
 local graphicDesignWidth = 768    
 local graphicsScale = director.displayWidth / graphicDesignWidth
@@ -212,9 +213,8 @@ function testMap(xDir, yDir)
       if levelcomplete == false then
         star = star+1
         save()
-        clean()
-        --reset()
       end
+      --clean()
       switchToScene("end")
     end
 end
@@ -337,7 +337,6 @@ function initUI()
   pause_sprite:addEventListener("touch", pauseGame)
 end
 
-
 function init()
     gameScene = director:createScene()
     
@@ -347,6 +346,7 @@ function init()
     isLevelComplete()
     createGrid()
 
+    endGame.init()
     levelSelect.init()
     pauseMenu.init()
     mainMenu.init()
