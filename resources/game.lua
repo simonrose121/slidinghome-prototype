@@ -35,6 +35,7 @@ local continueGameButton
 local settingsButton
 local restartButton
 local exitGameButton
+local pause_sprite
 
 function load()
     local file = io.open("star" .. _G.level .. ".txt")
@@ -65,13 +66,13 @@ function isLevelComplete()
     if star == 0 then
         staruncomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_uncomplete.png")
         staruncomplete.xAnchor = -4.5
-        staruncomplete.yAnchor = -8
+        staruncomplete.yAnchor = -9
         staruncomplete.xScale = (director.displayWidth / bg_width) 
         staruncomplete.yScale = (director.displayHeight / bg_height) 
     elseif star > 0 then
         starcomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_complete.png")
         starcomplete.xAnchor = -4.5
-        starcomplete.yAnchor = -8
+        starcomplete.yAnchor = -9
         starcomplete.xScale = (director.displayWidth / bg_width) 
         starcomplete.yScale = (director.displayHeight / bg_height) 
         levelcomplete = true
@@ -299,6 +300,7 @@ function pause(event)
     settingsButton.alpha = 1
     exitGameButton.alpha = 1
     background.alpha = 0.2
+    pause_sprite.alpha = 0
     player.alpha = 0
     igloo.alpha = 0
     for key,value in pairs(rocks) do
@@ -316,6 +318,7 @@ function continue(event)
     continueGameButton.alpha = 0
     settingsButton.alpha = 0
     exitGameButton.alpha = 0
+    pause_sprite.alpha = 1
     background.alpha = 1
     for key,value in pairs(rocks) do
         rocks[key].alpha = 1
@@ -339,13 +342,13 @@ function initUI()
     background.xScale = director.displayWidth / bg_width
     background.yScale = director.displayHeight / 850
 
-    local pause_sprite = director:createSprite( {
-        x = director.displayCenterX, y = 0, 
-        xAnchor = 0.5,
-        yAnchor = 0, 
-        xScale = graphicsScale,
-        yScale = graphicsScale,
-        source = "textures/pause_icon.png"
+    pause_sprite = director:createSprite( {
+        x = director.displayCenterX, y = director.displayCenterY, 
+        xAnchor = 6,
+        yAnchor = -8,
+        xScale = director.displayWidth / 768,
+        yScale = director.displayWidth / 768,
+        source = "textures/pause.png"
     } )
 
     continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Continue_Button.png")
