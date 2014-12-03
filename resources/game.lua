@@ -35,6 +35,7 @@ local map
 local staruncomplete
 local starcomplete
 local levelcomplete = false
+local rocks = {}
 
 function load()
     local file = io.open("star.txt")
@@ -153,6 +154,7 @@ function createGrid()
                     xScale = graphicsScale, 
                     yScale = graphicsScale, 
                 })
+                table.insert(rocks, rock)
             end
             if map[y][x] == 2 then
                 player = director:createSprite({
@@ -214,7 +216,7 @@ function testMap(xDir, yDir)
         star = star+1
         save()
       end
-      --clean()
+      clean()
       switchToScene("end")
     end
 end
@@ -294,14 +296,19 @@ function clean(event)
     --reset map array
     map = {}
     --remove objects
-    rock:removeFromParent()
     player:removeFromParent()
     igloo:removeFromParent()
     --snowpatch:removeFromParent()
-    rock = nil
     player = nil
     igloo = nil
     snowpatch = nil
+
+    for key,value in pairs(rocks) do --actualcode
+      rocks[key]:removeFromParent()
+      rocks[key] = nil
+    end
+
+    rocks = {}
 
     collectgarbage("collect")
     director:cleanupTextures()
