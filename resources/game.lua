@@ -63,13 +63,12 @@ function exitGame(event)
 end
 
 function isLevelComplete()
-    if star == 0 then
-        staruncomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_uncomplete.png")
-        staruncomplete.xAnchor = -4.5
-        staruncomplete.yAnchor = -9
-        staruncomplete.xScale = (director.displayWidth / bg_width) 
-        staruncomplete.yScale = (director.displayHeight / bg_height) 
-    elseif star > 0 then
+    staruncomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_uncomplete.png")
+    staruncomplete.xAnchor = -4.5
+    staruncomplete.yAnchor = -9
+    staruncomplete.xScale = (director.displayWidth / bg_width) 
+    staruncomplete.yScale = (director.displayHeight / bg_height) 
+    if star > 0 then
         starcomplete = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/star_complete.png")
         starcomplete.xAnchor = -4.5
         starcomplete.yAnchor = -9
@@ -99,9 +98,9 @@ function setMap(level)
               { 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1 },
               { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
               { 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
+              { 1, 4, 0, 0, 0, 0, 4, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
               { 1, 3, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 4, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
               { 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 1 },
               { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
               { 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1 }
@@ -240,19 +239,16 @@ function touch(event)
             elseif (event.y < startY - minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, -1)
                 direction = "down"
-                audio:playSound("audio/slide.wav") 
                 playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             --right
             elseif (event.x > startX + minimumSwipe and event.y < startY + swipeOffset and event.y > startY-swipeOffset) then
                 testObstacle(1, 0)
                 direction = "right"
-                audio:playSound("audio/slide.wav") 
                 playerTween = tween:to(player, { x=tmpX*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             --up
             elseif (event.y > startY + minimumSwipe and event.x < startX + swipeOffset and event.x > startX-swipeOffset) then
                 testObstacle(0, 1)
                 direction = "up"
-                audio:playSound("audio/slide.wav") 
                 playerTween = tween:to(player, { y=tmpY*cellsize, time=index/speed, onStart=animatePlayer, onComplete=cancelTween, easing=ease.sineIn })
             end
         end
@@ -385,9 +381,7 @@ function gameScene:tearDown(event)
     settingsButton:removeFromParent()
     continueGameButton:removeFromParent()
 
-    if staruncomplete ~= nil then
-        staruncomplete:removeFromParent()
-    end
+    staruncomplete:removeFromParent()
        
     if starcomplete ~= nil then
         starcomplete:removeFromParent()
