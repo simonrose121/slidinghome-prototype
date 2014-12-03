@@ -1,5 +1,7 @@
 -- Create the game scene
 
+require("levelSelect")
+
 gameScene = director:createScene()
 
 local graphicDesignWidth = 768    
@@ -29,6 +31,12 @@ local starcomplete
 local levelcomplete = false
 local rocks = {}
 local map = {}
+local level_num
+local background
+local continueGameButton
+local settingsButton
+local restartButton
+local exitGameButton
 
 function load()
     local file = io.open("star.txt")
@@ -41,6 +49,18 @@ function save()
     local file = io.open("star.txt", "w")
     file:write(star.."\n")
     file:close()
+end
+
+-- Exit game event handler, called when the user taps the Exit Game button
+function settings(event)
+  -- Switch to main men  scene
+  switchToScene("settings")
+end
+
+-- Exit game event handler, called when the user taps the Exit Game button
+function exitGame(event)
+  -- Switch to main men  scene
+  switchToScene("main")
 end
 
 function isLevelComplete()
@@ -60,25 +80,24 @@ function isLevelComplete()
     end
 end
 
-function setMap(levelNum) 
-
-    print("level num is " .. levelNum)
+function setMap() 
+    print("level is " .. level)
     --level 1
-    if levelNum == 1 then
+    if level == 1 or level == nil then
         map = {
-              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
-              { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 2, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+              { 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 2, 0, 0, 3, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 1 }
         }
     end
-    if levelNum == 2 then
+    if level == 2 then
       --level 2
         map = {
               { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -138,8 +157,6 @@ function setMap(levelNum)
     ]]--
 end
 
-
-
 local rightAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/right.png" })
 local leftAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/left.png" })
 local downAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/down.png" })
@@ -148,16 +165,6 @@ local upAn = director:createAtlas({ width=64, height=64, numFrames=3, textureNam
 function createGrid()
     for y = 1, #map do
         for x = 1, #map[y] do
-            if map[y][x] == 1 then
-                rock = director:createSprite({
-                    source="textures/rock.png",
-                    x=y*cellsize,
-                    y=x*cellsize,
-                    xScale = graphicsScale, 
-                    yScale = graphicsScale, 
-                })
-                table.insert(rocks, rock)
-            end
             if map[y][x] == 2 then
                 player = director:createSprite({
                     source="textures/character.png",
@@ -177,13 +184,14 @@ function createGrid()
                 })
             end
             if map[y][x] == 4 then
-                snowpatch = director:createSprite({
-                    source="textures/snowpatch.png",
+                rock = director:createSprite({
+                    source="textures/rock.png",
                     x=y*cellsize,
                     y=x*cellsize,
                     xScale = graphicsScale, 
                     yScale = graphicsScale, 
                 })
+                table.insert(rocks, rock)
             end
         end
     end
@@ -219,7 +227,6 @@ function testMap(xDir, yDir)
             save()
         end
         switchToScene("end")
-        --reset()
     end
 end
 
@@ -294,42 +301,92 @@ function cancelTween()
     playerTween = nil
 end
 
-function pauseGame(event)
-    if (event.phase == "ended") then
-      -- Switch to the pause scene
-          gameScene:pauseTweens()
-          switchToScene("pause")
+function pause(event)
+    continueGameButton.alpha = 1
+    settingsButton.alpha = 1
+    exitGameButton.alpha = 1
+    background.alpha = 0.2
+    player.alpha = 0
+    igloo.alpha = 0
+    for key,value in pairs(rocks) do
+        rocks[key].alpha = 0
     end
+    player:pauseTweens()
+    player:pause()
+
+    exitGameButton:addEventListener("touch", exitGame)
+    settingsButton:addEventListener("touch", settings)
+    continueGameButton:addEventListener("touch", continue)
 end
 
+function continue(event)
+    continueGameButton.alpha = 0
+    settingsButton.alpha = 0
+    exitGameButton.alpha = 0
+    background.alpha = 1
+    for key,value in pairs(rocks) do
+        rocks[key].alpha = 1
+    end
+    player.alpha = 1
+    igloo.alpha = 1
+    player:resumeTweens()
+    player:play()
+
+    exitGameButton:removeEventListener("touch", exitGame)
+    settingsButton:removeEventListener("touch", settings)
+    continueGameButton:removeEventListener("touch", continue)
+end
+
+
 function initUI()
-  -- Create pause menu sprite (docked to top of screen)
-  -- Background
-  local background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
-  background.xAnchor = 0.5
-  background.yAnchor = 0.5
-  bg_width, bg_height = background:getAtlas():getTextureSize()
-  background.xScale = director.displayWidth / bg_width
-  background.yScale = director.displayHeight / 850
+    background = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Background_1st_Level.png")
+    background.xAnchor = 0.5
+    background.yAnchor = 0.5
+    bg_width, bg_height = background:getAtlas():getTextureSize()
+    background.xScale = director.displayWidth / bg_width
+    background.yScale = director.displayHeight / 850
 
-  local pause_sprite = director:createSprite( {
-      x = director.displayCenterX, y = 0, 
-      xAnchor = 0.5,
-      yAnchor = 0, 
-      xScale = graphicsScale,
-      yScale = graphicsScale,
-      source = "textures/pause_icon.png"
-  } )
+    local pause_sprite = director:createSprite( {
+        x = director.displayCenterX, y = 0, 
+        xAnchor = 0.5,
+        yAnchor = 0, 
+        xScale = graphicsScale,
+        yScale = graphicsScale,
+        source = "textures/pause_icon.png"
+    } )
 
-  pause_sprite:addEventListener("touch", pauseGame)
+    continueGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Continue_Button.png")
+    continueGameButton.xAnchor = 0.5
+    continueGameButton.yAnchor = -2
+    continueGameButton.xScale = (director.displayWidth / 768) 
+    continueGameButton.yScale = (director.displayWidth / 768) 
+    continueGameButton.alpha = 0
+
+    settingsButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Settings_Button_2.png")
+    settingsButton.xAnchor = 0.5
+    settingsButton.yAnchor = 0.25
+    settingsButton.xScale = (director.displayWidth / 768) 
+    settingsButton.yScale = (director.displayWidth / 768) 
+    settingsButton.alpha = 0
+
+    exitGameButton = director:createSprite(director.displayCenterX, director.displayCenterY, "textures/Exit_Button.png")
+    exitGameButton.xAnchor = 0.5
+    exitGameButton.yAnchor = 2.5
+    exitGameButton.xScale = (director.displayWidth / 768) 
+    exitGameButton.yScale = (director.displayWidth / 768) 
+    exitGameButton.alpha = 0
+
+    pause_sprite:addEventListener("touch", pause)
 end
 
 function gameScene:tearDown(event) 
-    --reset map array
     map = {}
-    --remove objects
     player:removeFromParent()
     igloo:removeFromParent()
+
+    exitGameButton:removeFromParent()
+    settingsButton:removeFromParent()
+    continueGameButton:removeFromParent()
 
     player = nil
     igloo = nil
@@ -345,19 +402,6 @@ function gameScene:tearDown(event)
     director:cleanupTextures()
 
     system:removeEventListener("touch", touch)
-
-    --reset()
-end
-
-function reset()
-    initAudio()
-    initUI()
-    load()
-    isLevelComplete()
-    setMap()
-    createGrid()
-
-    system:addEventListener("touch", touch)
 end
 
 function gameScene:setUp(event)
@@ -365,7 +409,7 @@ function gameScene:setUp(event)
     initUI()
     load()
     isLevelComplete()
-    setMap(1)
+    setMap()
     createGrid()
 
     system:addEventListener("touch", touch)

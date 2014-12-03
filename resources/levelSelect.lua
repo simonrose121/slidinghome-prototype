@@ -10,12 +10,11 @@ levelScene = nil
 local backButton
 local bg_width
 local bg_height
-local level_num
+
 
 -- New game event handler, called when the user taps the New Game button
 function newGame(event)
 	-- Switch to game scene
-	level_num = 2
 	switchToScene("game")
 end
 
