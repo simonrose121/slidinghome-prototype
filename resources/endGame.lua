@@ -7,7 +7,7 @@ local playButton
 
 function mainMenu(event)
 	-- Switch to game scene
-	switchToScene("main")
+	switchToScene("levelSelect")
 end
 
 
