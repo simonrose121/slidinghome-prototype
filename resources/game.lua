@@ -1,14 +1,6 @@
 -- Create the game scene
 
-module(..., package.seeall)
-
-gameScene = nil
-
-local class = require("class")
-require("mainMenu")
-require("pauseMenu")
-require("levelSelect")
-require("endGame")
+gameScene = director:createScene()
 
 local graphicDesignWidth = 768    
 local graphicsScale = director.displayWidth / graphicDesignWidth
@@ -36,6 +28,7 @@ local staruncomplete
 local starcomplete
 local levelcomplete = false
 local rocks = {}
+local map = {}
 
 function load()
     local file = io.open("star.txt")
@@ -67,76 +60,85 @@ function isLevelComplete()
     end
 end
 
---level 1
-local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 2, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-}
---[[
---level 2
-local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
-      { 1, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-}
+function setMap(levelNum) 
 
---level 3
-local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1 },
-      { 1, 2, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
-      { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-}
+    print("level num is " .. levelNum)
+    --level 1
+    if levelNum == 1 then
+        map = {
+              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1 },
+              { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 2, 0, 0, 3, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+        }
+    end
+    if levelNum == 2 then
+      --level 2
+        map = {
+              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1 },
+              { 1, 3, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1 },
+              { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+              { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+        }
+    end
+    --[[
+    --level 3
+    local map = {
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 1 },
+          { 1, 2, 0, 0, 0, 0, 1, 3, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+          { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    }
 
---level 4
-local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
-      { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
-      { 1, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-}
+    --level 4
+    local map = {
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1 },
+          { 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1 },
+          { 1, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1 },
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    }
 
---level 5
-local map = {
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 1 },
-      { 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1 },
-      { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
-}
-]]--
+    --level 5
+    local map = {
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 2, 1 },
+          { 1, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 1 },
+          { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 }
+    }
+    ]]--
+end
+
+
 
 local rightAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/right.png" })
 local leftAn = director:createAtlas({ width=64, height=64, numFrames=3, textureName="textures/left.png" })
@@ -212,12 +214,12 @@ function testMap(xDir, yDir)
     local playerX = math.floor((player.x / cellsize) + 0.5)
     local playerY = math.floor((player.y / cellsize) + 0.5)
     if map[playerX + xDir][playerY + yDir] == 3 then
-      if levelcomplete == false then
-        star = star+1
-        save()
-      end
-      clean()
-      switchToScene("end")
+        if levelcomplete == false then
+            star = star+1
+            save()
+        end
+        switchToScene("end")
+        --reset()
     end
 end
 
@@ -292,34 +294,12 @@ function cancelTween()
     playerTween = nil
 end
 
-function clean(event) 
-    --reset map array
-    map = {}
-    --remove objects
-    player:removeFromParent()
-    igloo:removeFromParent()
-    --snowpatch:removeFromParent()
-    player = nil
-    igloo = nil
-    snowpatch = nil
-
-    for key,value in pairs(rocks) do --actualcode
-      rocks[key]:removeFromParent()
-      rocks[key] = nil
-    end
-
-    rocks = {}
-
-    collectgarbage("collect")
-    director:cleanupTextures()
-end
-
 function pauseGame(event)
-  if (event.phase == "ended") then
-    -- Switch to the pause scene
-        gameScene:pauseTweens()
-        switchToScene("pause")
-  end
+    if (event.phase == "ended") then
+      -- Switch to the pause scene
+          gameScene:pauseTweens()
+          switchToScene("pause")
+    end
 end
 
 function initUI()
@@ -332,7 +312,6 @@ function initUI()
   background.xScale = director.displayWidth / bg_width
   background.yScale = director.displayHeight / 850
 
-
   local pause_sprite = director:createSprite( {
       x = director.displayCenterX, y = 0, 
       xAnchor = 0.5,
@@ -341,24 +320,55 @@ function initUI()
       yScale = graphicsScale,
       source = "textures/pause_icon.png"
   } )
+
   pause_sprite:addEventListener("touch", pauseGame)
 end
 
-function init()
-    gameScene = director:createScene()
-    
+function gameScene:tearDown(event) 
+    --reset map array
+    map = {}
+    --remove objects
+    player:removeFromParent()
+    igloo:removeFromParent()
+
+    player = nil
+    igloo = nil
+
+    for key,value in pairs(rocks) do
+        rocks[key]:removeFromParent()
+        rocks[key] = nil
+    end
+
+    rocks = {}
+
+    collectgarbage("collect")
+    director:cleanupTextures()
+
+    system:removeEventListener("touch", touch)
+
+    --reset()
+end
+
+function reset()
     initAudio()
     initUI()
     load()
     isLevelComplete()
+    setMap()
     createGrid()
-
-    endGame.init()
-    levelSelect.init()
-    pauseMenu.init()
-    mainMenu.init()
 
     system:addEventListener("touch", touch)
 end
 
+function gameScene:setUp(event)
+    initAudio()
+    initUI()
+    load()
+    isLevelComplete()
+    setMap(1)
+    createGrid()
 
+    system:addEventListener("touch", touch)
+end
+
+gameScene:addEventListener({"setUp", "tearDown"}, gameScene)

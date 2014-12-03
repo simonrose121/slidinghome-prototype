@@ -1,12 +1,20 @@
 system:setFrameRateLimit(30)
 
+require("mainMenu")
+require("pauseMenu")
+require("levelSelect")
+require("endGame")
 require("game")
-game.init()
+
+endGame.init()
+levelSelect.init()
+pauseMenu.init()
+mainMenu.init()
 
 -- Switch to specific scene
 function switchToScene(scene_name)
     if (scene_name == "game") then
-        director:moveToScene(game.gameScene, {transitionType="slideInR", transitionTime=0.5})
+        director:moveToScene(gameScene, {transitionType="slideInR", transitionTime=0.5})
     elseif (scene_name == "main") then
         director:moveToScene(mainMenu.menuScene, {transitionType="fade", transitionTime=0.5})
     elseif (scene_name == "pause") then
