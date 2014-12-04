@@ -1,12 +1,11 @@
 system:setFrameRateLimit(30)
 
 require("mainMenu")
-require("levelSelect")
 require("endGame")
 require("game")
+require("levelSelect")
 
 endGame.init()
-levelSelect.init()
 mainMenu.init()
 
 function switchToScene(scene_name)
@@ -21,6 +20,6 @@ function switchToScene(scene_name)
     elseif (scene_name == "settings") then
         director:moveToScene(settingsScene, {transitionType="fade", transitionTime=0.5})  
     elseif (scene_name == "levelSelect") then
-        director:moveToScene(levelSelect.levelScene, {transitionType="fade", transitionTime=0.5})  
+        director:moveToScene(levelScene, {transitionType="fade", transitionTime=0.5})  
     end
 end
